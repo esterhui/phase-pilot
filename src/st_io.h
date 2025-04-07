@@ -174,13 +174,14 @@ void printAccumHeader(FILE *fid, data_header_t *datahdr,
 
 int makeargv(char *string, char *argv[], int argvsize);
 
-void printStatistics(FILE *fid, std::vector<stats_signal *> stats);
 
+
+#ifdef COMPUTE_STATISTICS
 /**
  * Reads signal tracker data, (raw, tone, or PR)
  */
 mat *parse_st_data(const char *filename, double *fs);
-
+void printStatistics(FILE *fid, std::vector<stats_signal *> stats);
 /**
  * Reads signal tracker tone data
  */
@@ -194,5 +195,7 @@ st_accum_tone *parse_st_accum_tone(const char *filename, int skip);
 #define I_NSAMP (5)
 
 void printStatistics(FILE *fid, std::vector<stats_signal *> stats);
+
+#endif
 
 #endif

@@ -1,37 +1,15 @@
-find_package(FFTW REQUIRED)
-find_package(Armadillo REQUIRED)
-find_package(GSL REQUIRED)
+cmake_minimum_required(VERSION 3.10)
 
-include_directories(${FFTW_INCLUDES})
-include_directories(${ARMADILLO_INCLUDE_DIRS})
-include_directories(${GSL_INCLUDE_DIRS})
+# Project name
+project(phase-pilot
+  VERSION 1.0.0
+  DESCRIPTION "Signal detection and tracking software")
 
-# ------------ Compile library ------------
-add_definitions(-DCOMPUTE_STATISTICS)
+# C++ standard
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+enable_testing()
 
-set(SRC 
-    ./st_dsp.c
-    ./st_io.c
-    )
+add_subdirectory(src)
 
-# Force c++
-SET_SOURCE_FILES_PROPERTIES(${SRC} PROPERTIES LANGUAGE CXX )
-
-add_library(st SHARED ${SRC})
-
-
-# ------------ Compile tone_track ------------
-
-set(SRC 
-    ./tone_track.c
-    )
-
-# Force c++
-SET_SOURCE_FILES_PROPERTIES(${SRC} PROPERTIES LANGUAGE CXX )
-
-add_executable(tone_track ${SRC})
-target_link_libraries(tone_track st)
-target_link_libraries(tone_track ${FFTW_LIBRARIES})
-target_link_libraries(tone_track ${ARMADILLO_LIBRARIES})
-target_link_libraries(tone_track ${GSL_LIBRARIES})

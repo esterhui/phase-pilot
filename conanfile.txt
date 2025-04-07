@@ -1,0 +1,7 @@
+[requires]
+fftw/3.3.10
+[generators]
+CMakeDeps
+CMakeToolchain
+[layout]
+cmake_layout

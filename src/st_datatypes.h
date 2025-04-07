@@ -3,14 +3,9 @@
 
 #include <inttypes.h>
 
-#include "armadillo"
-
-typedef std::vector<double> stdvec;
 
 #define DATA_BLOCKSIZE 524288
 #define PRN_LENGTH 1023
-
-using namespace arma;
 
 typedef struct {
   float real;
@@ -140,6 +135,7 @@ typedef struct {
   double vel_delay;
 } loop_t;
 
+/*
 typedef struct {
   vec timetag_s;
   vec ip;
@@ -149,6 +145,7 @@ typedef struct {
   vec nsamp;
   double fs; // sample rate in Hz
 } st_accum_tone;
+*/
 
 typedef struct {
   int antenna_number;

@@ -16,10 +16,9 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "armadillo"
-#include "st_datatypes.h"
 #include <fftw3.h>
+
+#include "st_datatypes.h"
 
 /* -------------------------------------------------------------------------- */
 /** @brief resample_prncode
@@ -165,6 +164,7 @@ double fitter(double *timetag_s, double *value, int nelements, int order,
 int fft_acquire_tone(complex_double_t *pbuf_data, int numsamples,
                      acq_parameters_t *acq);
 
+#ifdef COMPUTE_STATISTICS
 // Given I/Q vectors, finds statistics
 // rf_frequency is nominal frequency of carrier in cyc/second (Hz)
 stats_signal *computeStatistics(st_accum_tone *d, double rf_frequency,
@@ -173,5 +173,6 @@ stats_signal *computeStatistics(st_accum_tone *d, double rf_frequency,
 // Removes polynomial from data
 stdvec *removePoly(double *time_s, double *data, uint32_t num_elements,
                    double *coef, int order);
+#endif
 
 #endif

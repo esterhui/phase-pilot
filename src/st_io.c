@@ -533,7 +533,7 @@ int skipBytes(FILE *fid, long long int bytes) {
   }
 
   // First try to use fseek, if it fails, read byte-for-byte
-  if ((rc_long = lseek64(fileno(fid), bytes, SEEK_CUR)) == bytes) {
+  if ((rc_long = lseek(fileno(fid), bytes, SEEK_CUR)) == bytes) {
     free(tempBuf);
     return 1;
   } else {
