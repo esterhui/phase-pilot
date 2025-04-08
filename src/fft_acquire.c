@@ -37,7 +37,6 @@
 #include "st_io.h"
 
 #define FINE_BINS_SS (20)  // Single sided fine bins to search
-#define HDR_DIR ("/home/esterhui/.signalTracker/")
 
 // Only good to SNRs of about 200 V/V with 10ms integration times
 
@@ -169,12 +168,10 @@ int main(int argc, char **argv)
 
 
     // Read the first header to get some info
-    fprintf(stderr,"Trying alternate header file\n");
     char hdr_file[512];
-    sprintf(hdr_file,"%s/data_hdr_chan%02d.txt",HDR_DIR,chan_to_use);
-    //sprintf(hdr_file,"%s/data_hdr_chan%02d.txt",HDR_DIR,2);
+    sprintf(hdr_file,"iq_meta.txt");
     if ((fid_datahdr=fopen(hdr_file,"r"))==NULL) {
-        perror("Can't open alternate header file");
+        perror("Can't open header file");
     }
     phdr=parseDataHeader(fid_datahdr);
 

@@ -111,10 +111,9 @@ int main(int argc, char **argv)
 
     while(fgets(line,sizeof(line),stdin)!=NULL)
     {
-        
-        //printf("processing line %d, %f %f\n",i[1],array[0],array[1]);
-        // Skip if it's a comment (and print out)
-        if (line[0]=='#') {
+
+        // Quick hack, header line starts with "t", skip it
+        if (line[0]=='t') {
             fprintf(stdout,"%s",line);
             continue;
         }
@@ -190,7 +189,9 @@ int main(int argc, char **argv)
                     fit_value=0;
                     for (int count=0; count < i[j]; count++) {
                         if (j==1 || j==3 || j==5) {
-                            fit_value+=fabs(yi[j][count]);
+                            // If data bits present, we used to use fabs() here, otherwise we're summing over
+                            // data bits.
+                            fit_value+=yi[j][count];
                         }
                         else { 
                             fit_value+=yi[j][count];

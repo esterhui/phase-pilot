@@ -884,8 +884,6 @@ cr_t* counterRotate(cr_t* pcr)
     // since phase here keeps incrementing
     pcr_out->phase_next=phase+(2.0*M_PI*pcr->fc*Ts);
 
-    //fprintf(stderr,"CR: %f : %f (integ: %f)\n",1.0+fmod(pcr_out->start_phase/(2.0*M_PI),1.0),pcr_out->phase_next/(2.0*M_PI),pcr_out->integrated_phase);
-
     return pcr_out;
 }
 

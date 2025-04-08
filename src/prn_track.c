@@ -20,11 +20,8 @@
 
 #define QUARTER_CYCLE (M_PI / 2.0) // 90 degrees (but in radians)
 #define TRACKING_THRESHOLD (0.0)   // 2 sigma [V/V]
-#define HDR_DIR ("/home/esterhui/.signalTracker/")
 
 #define CMC_FIT_SEC (5.0)
-
-#undef FITTER
 
 #define SNPRINTF_LENGTH (512)
 
@@ -34,7 +31,7 @@
 
 void displayUsage(char *progname) {
   fprintf(stderr, "%s [-a -p -n -i -d] < inputfile > outputfile\n\n", progname);
-  fprintf(stderr, "Reads IF data formatted with prsr_parse from stdin and "
+  fprintf(stderr, "Reads IF data from stdin and "
                   "writes I/Q accumulations to stdout\n\n");
   fprintf(stderr, "$Revision: 128 $\n\n");
 #ifdef FITTER
@@ -219,10 +216,9 @@ int main(int argc, char **argv) {
 
   // Parse data header
   char hdr_file[SNPRINTF_LENGTH];
-  snprintf(hdr_file, SNPRINTF_LENGTH, "%s/data_hdr_chan%02d.txt", HDR_DIR,
-           chan_to_use);
+  snprintf(hdr_file, SNPRINTF_LENGTH, "iq_meta.txt");
   if ((fid_datahdr = fopen(hdr_file, "r")) == NULL) {
-    perror("Can't open alternate header file");
+    perror("Can't open header file");
     goto alldone;
   }
 
@@ -347,7 +343,7 @@ int main(int argc, char **argv) {
   corr.spacing_chips = lag_spacing_chips;
 
   // print header -------------------------------------------------
-  printAccumHeader(stdout, datahdr, acqhdr, integ_periods, lag_spacing_chips);
+  printAccumHeader(stderr, datahdr, acqhdr, integ_periods, lag_spacing_chips);
 
   // Can't integrate over data bits
   if (acqhdr->codes_per_databit > 0) {
@@ -360,9 +356,9 @@ int main(int argc, char **argv) {
   // it is 1023*20 chips
   nominal_chips_per_epoch = integ_periods * acqhdr->codelength;
 
-  fprintf(stdout, "# timetag:s, IE, QE, IP, QP, IL, QL, ");
-  fprintf(stdout, "Doppler:Hz, Coderate:Hz, Phase:s, Range:s, ");
-  fprintf(stdout, "epoch_offset:ns, samplesused, vsnr:V/V, noise\n");
+  fprintf(stdout, "time_s  IE  QE  IP  QP  IL  QL  ");
+  fprintf(stdout, "doppler_hz  coderate_hz  phase_s  range_s  ");
+  fprintf(stdout, "epoch_offset_ns  num_samp  vsnr  noise\n");
 
   // Save off the original frequency, need this for
   // PLL to work properly
@@ -394,6 +390,8 @@ int main(int argc, char **argv) {
   // carrier_phase_cycles = acqhdr->sample_number * nominal_cycles_per_sample;
   // carrier_phase_cycles -= floor(carrier_phase_cycles);
 
+
+  fprintf(stderr,"Sky freq is %f\n",acqhdr->carrier_frequency);
   // ------- Loop through all data and run prcessing on blocks
   while (((pdata = parseDataPayload(stdin, datahdr, acqhdr->sample_number,
                                     pcr->num_samples, chan_to_use, flipiq)) !=

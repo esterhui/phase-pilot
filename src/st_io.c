@@ -281,15 +281,15 @@ complex_double_t *parseDataPayload(FILE *fid, data_header_t *phdr,
     if (isGNURADIO_COMPLEX && phdr->bits_per_sample == 32) {
       // fprintf(stderr,"PX1500 data\n");
       for (i = 0; i < rc_read; i++) {
-        pdata[samples_read + i].real = 10000 * pbuf32f[2 * i + 0];
-        pdata[samples_read + i].imag = 10000 * pbuf32f[2 * i + 1];
+        pdata[samples_read + i].real =  pbuf32f[2 * i + 0];
+        pdata[samples_read + i].imag =  pbuf32f[2 * i + 1];
       }
 
     } else if (isGNURADIO_COMPLEX && phdr->bits_per_sample == 64) {
       // SMAP data, double, but convert to complex
       for (i = 0; i < rc_read; i++) {
-        pdata[samples_read + i].real = (float)(10000.0 * pbuf64f[2 * i + 0]);
-        pdata[samples_read + i].imag = (float)(10000.0 * pbuf64f[2 * i + 1]);
+        pdata[samples_read + i].real = (float)( pbuf64f[2 * i + 0]);
+        pdata[samples_read + i].imag = (float)( pbuf64f[2 * i + 1]);
       }
     } else if (isGNURADIO_COMPLEX_SHORT && phdr->bits_per_sample == 16) {
       for (i = 0; i < rc_read; i++) {
@@ -576,13 +576,7 @@ int printCorrelWaveform(FILE *fid, int num_lags, double *lag_s,
                         data_header_t *datahdr, acq_parameters_t *acqhdr) {
   int i;
 
-  fprintf(fid, "# $Revision: 124 $, Data Date:%d %d %d,", datahdr->year,
-          datahdr->doy, datahdr->sec);
-  fprintf(fid, "UTC Offset:%d ns,", datahdr->data_time_offset);
-  fprintf(fid, "Fs: %f Hz,", datahdr->fs);
-  fprintf(fid, "Samples skipped:%lld\n", acqhdr->sample_number);
-
-  fprintf(fid, "# Lag:s, Magnitude, Phase:ns\n");
+  fprintf(fid, "delay_s, magnitude, phase_nss\n");
 
   for (i = 0; i < num_lags; i++) {
     fprintf(fid, "% 9.9f % 9.1f % 14.12f\n", lag_s[i], lag_magnitude[i],

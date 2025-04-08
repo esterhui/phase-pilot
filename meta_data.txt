@@ -1,0 +1,10 @@
+#---------------------------------------
+Date                : 2025 1 1
+UTC Offset          : 0 [ns]
+Sample rate         : 3.0 [MHz]
+RF Frequency        : 1613.1e6 [Hz]
+Number of samples   : 0
+Bits per sample     : 32
+Channels            : 1
+Description         : GNURADIO_COMPLEX
+#---------------------------------------
